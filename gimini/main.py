@@ -1,6 +1,6 @@
 import telebot
 import google.generativeai as genai
-bot = telebot.TeleBot("7198874901:AAEGmT_guYchaUPTzktSJi6UvPcovRxXgkE", parse_mode=None)
+bot = telebot.TeleBot("7198874901:AAEGmT_guYchaUPTzktSJi6UvPcovRxXgkE")
 genai.configure(api_key="AIzaSyByQ5ocs4lQbydASZJjCm4KJ0IhJniiWuY")
 
 generation_config = {
@@ -43,12 +43,6 @@ convo = model.start_chat(history=[
     "parts": ["Hello, how can I assist you today?"]
   },
 ])
-
-@bot.message_handler(func=lambda m: True)
-def echo_all(message):
-	convo.send_message(message.text)
-	response = (convo.last.text)
-	bot.reply_to(message, response)
      
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
@@ -92,6 +86,10 @@ def start_message(message):
 "✅Я лучше chat-gpt\n"
 "Пожалуйста, дайте мне знать, как я могу помочь вам в написании кода.")
 
-
+@bot.message_handler(func=lambda m: True)
+def echo_all(message):
+	convo.send_message(message.text)
+	response = (convo.last.text)
+	bot.reply_to(message, response, parse_mode='markdown')
 
 bot.infinity_polling()
